@@ -1,0 +1,27 @@
+<!--
+    NOTICE:
+
+    This context is usually accessed via the external sip profile listening on port 5080.
+
+    It is recommended to have separate inbound and outbound contexts.  Not only for security
+    but clearing up why you would need to do such a thing.  You don't want outside un-authenticated
+    callers hitting your default context which allows dialing calls thru your providers and results
+    in Toll Fraud.
+-->
+
+<!-- http://wiki.freeswitch.org/wiki/Dialplan_XML -->
+<include>
+  <context name="public">
+    <extension name="check_auth" continue="true">
+      <condition field="${sip_authorized}" expression="^true$" break="never">
+  	     <anti-action application="respond" data="407"/>
+      </condition>
+    </extension>
+    <extension name="transfer_to_default">
+      <condition>
+  	     <action application="transfer" data="${destination_number} XML default"/>
+      </condition>
+    </extension>
+  </context>
+</include>
+

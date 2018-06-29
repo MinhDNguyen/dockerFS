@@ -1,0 +1,16 @@
+#!/bin/bash
+[Unit]
+Description=freeswitch-daemon
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/freeswitch start
+ExecReload=/etc/init.d/freeswitch restart
+PIDFile=/usr/local/freeswitch/run/freeswitch.pid
+#User=freeswitch
+#Group=daemon
+KillMode=process
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
